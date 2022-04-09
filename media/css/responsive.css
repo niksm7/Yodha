@@ -1,0 +1,37 @@
+@media (min-width: 992px) and (max-width: 1199px) {
+    .banner_taital { font-size: 42pt !important;}
+    .browse_text { padding-bottom: 10px !important;}
+    .search_box { padding: 20px !important;}
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+    .banner_taital { font-size: 33pt !important;}
+    .browse_text { font-size: 13pt !important; padding-bottom: 0px !important;}
+    .read_bt { width: 30% !important; }
+    .search_box { padding: 20px 20px !important; top: -164px !important; }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+
+
+.banner_section { background-size: cover !important;}
+.banner_taital { font-size: 24pt !important;}
+.browse_text { font-size: 12pt !important;}
+.read_bt { width: 32% !important; }
+.email_boton { font-size: 11pt !important; padding: 11px 11px !important;}
+
+}
+
+
+@media (max-width: 575px) {
+
+
+.banner_taital { font-size: 16pt !important;}
+.browse_text { font-size: 9pt !important; padding-bottom: 0px !important;}
+.layout_padding { padding-bottom: 30px !important; padding-top: 30px !important; background-size: cover !important; }
+.email_boton { margin-top: 20px !important;}
+.search_bt { width: 100%; margin-top: 20px !important;  }
+.read_bt { width: 55% !important; font-size: 13pt !important; }
+.search_box { margin-top: 20px !important;}
+}

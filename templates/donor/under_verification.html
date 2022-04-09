@@ -1,0 +1,182 @@
+{% extends 'basic.html' %}
+{% block basic_title %}Yodha :: Hospitals Under Verification{% endblock basic_title %}
+
+{% block basic_head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% comment %} <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> {% endcomment %}
+<link rel="stylesheet" href="/media/css/volunteer.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext">
+{% endblock basic_head %}
+
+
+{% block basic_body %}
+
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>Hospitals <b>Under Verification</b></h2>
+                </div>
+                <div class="col-sm-6">
+                    <div class="btn-group" data-toggle="buttons">
+
+                        <label class="btn btn-info active">
+                            <span style="margin-right: -10px;">All</span>
+                            <input type="radio" name="status" value="all" style="visibility:hidden;" checked="checked">
+                        </label>
+                        <label class="btn btn-success">
+                            <span style="margin-right: -10px;">Verified</span>
+                            <input type="radio" name="status" value="active" style="visibility:hidden;">
+                        </label>
+                        <label class="btn btn-danger">
+                            <span style="margin-right: -10px;">Unverified</span>
+                            <input type="radio" name="status" value="expired" style="visibility:hidden;">
+                        </label>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Hospitals</th>
+                    <th>Hospital Name</th>
+                    <th>Requirements</th>
+                    <th>Contact</th>
+                    <th>Country</th>
+                    <th>Verification Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr data-status="active">
+                    <td style="color: #FFAE42;">#1</td>
+                    <td>City Hospital</td>
+                    <td>Medicines, Oxygen Cylinders, Medical Equipment, Funds, Ration Kits</td>
+                    <td>9876543210</td>
+                    <td>Ukraine</td>
+                    <td><a href="#" class="btn btn-sm manage">Under Verification</a></td>
+                </tr>
+
+                <tr data-status="active">
+                    <td style="color: #FFAE42;">#2</td>
+                    <td>ABC Hospital</td>
+                    <td>Medicines, Oxygen Cylinders, Medical Equipment, Funds, Ration Kits</td>
+                    <td>9876543210</td>
+                    <td>Ukraine</td>
+                    <td><a href="#" class="btn btn-sm manage">Under Verification</a></td>
+                </tr>
+
+                <tr data-status="active">
+                    <td style="color: #FFAE42;">#3</td>
+                    <td>XYZ Hospital</td>
+                    <td>Medicines, Oxygen Cylinders, Medical Equipment, Funds, Ration Kits</td>
+                    <td>9876543210</td>
+                    <td>Ukraine</td>
+                    <td><a href="#" class="btn btn-sm manage">Under Verification</a></td>
+                </tr>
+    
+               
+                <div class="form-popup">
+                    <div class="container form-wrapper">
+                        <button class="btn close-form">Close</button>
+                        <form id="my-form" novalidate="novalidate" action="#" method="POST">
+                            {% csrf_token %}
+                            <input type="text" id="form_id" hidden name="form_id">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h1 class="form-title">Food Supplier Details</h1>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="food_supplier_name"
+                                        name="food_supplier_name" required="">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email">E-mail</label>
+                                    <input type="text" class="form-control" id="food_supplier_email"
+                                        name="food_supplier_email" required="">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email">Contact</label>
+                                    <input type="text" class="form-control" id="food_supplier_contact"
+                                        name="food_supplier_contact" required="">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email">City</label>
+                                    <input type="text" class="form-control" id="food_supplier_city"
+                                        name="food_supplier_city" required="">
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <label for="email">Address</label>
+                                    <textarea type="text" class="form-control" id="food_supplier_address"
+                                        name="food_supplier_address" required=""></textarea>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="email">Service Type</label><br>
+                                    <input type="radio" id="food_supplier_service_free" name="food_supplier_service"
+                                        value="Free">
+                                    <label for="food_supplier_service_free">Free</label><br>
+                                    <input type="radio" id="food_supplier_service_paid" name="food_supplier_service"
+                                        value="Paid">
+                                    <label for="food_supplier_service_paid">Paid</label><br>
+                                    <input type="radio" id="food_supplier_service_dn" name="food_supplier_service"
+                                        value="Don't Know">
+                                    <label for="food_supplier_service_dn">Don't Know</label><br>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="email">User Verification</label><br>
+                                    <input type="radio" id="food_supplier_verify_verified" name="food_supplier_verify"
+                                        value="Verified">
+                                    <label for="Verified">Verified</label><br>
+                                    <input type="radio" id="food_supplier_verify_unverified" name="food_supplier_verify"
+                                        value="Unverified">
+                                    <label for="Unverified">Unverified</label><br>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="verify">Volunteer Verification</label><br>
+                                    <input type="radio" id="food_supplier_vol_verify" name="food_supplier_vol_verify"
+                                        value="Verified">
+                                    <label for="food_supplier_vol_verify">Verified</label><br>
+                                    <input type="radio" id="food_supplier_vol_unverify" name="food_supplier_vol_verify"
+                                        value="Unverified">
+                                    <label for="food_supplier_vol_unverify">Unverified</label><br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label for="something">Additional Details</label>
+                                    <textarea name="food_supplier_details" class="form-control"
+                                        id="food_supplier_details"></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn send-form">Save</button>
+                        </form>
+                    </div>
+                </div>
+
+
+            </tbody>
+        </table>
+    </div>
+{% endblock basic_body %}
+
+{% block basic_scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/media/js/volunteer.js"></script>
+
+<script>
+    document.getElementById("food_supplier_verify_verified").disabled = true;
+    document.getElementById("food_supplier_verify_unverified").disabled = true;
+
+   
+
+</script>
+{% endblock basic_scripts %}
