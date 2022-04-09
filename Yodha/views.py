@@ -14,4 +14,7 @@ def home(request):
 def under_verification(request):
     return render(request,'donor/under_verification.html')
 
+def donations(request):
+    return render(request,'donor/donations.html')
+
 

@@ -58,74 +58,10 @@
 
 			<div class="navbar-nav ml-auto action-buttons" style="flex:none">
 				<a href="/" class="nav-item nav-link">Home</a>
-				<div class="nav-item dropdown">
-					<a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Leads <span><i
-								class="fa fa-caret-down"></i></a>
-					<div class="dropdown-menu">
-						<a href="/leads/foodleads/1" class="dropdown-item">Food</a>
-						<a href="/leads/bedleads/1" class="dropdown-item">Beds</a>
-						<a href="/leads/injectionleads/1" class="dropdown-item">Injections</a>
-						<a href="/leads/oxygenleads/1" class="dropdown-item">Oxygen</a>
-						<a href="/leads/plasmaleads/1" class="dropdown-item">Plasma</a>
-					</div>
-				</div>
-				{% comment %} <a href="/donations/plasma/" class="nav-item nav-link">Provide Leads</a>
-				{% if "Volunteer" in request.user.groups.all.0.name %}
-				<div class="nav-item dropdown">
-					<a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Check Leads <span><i
-								class="fa fa-caret-down"></i></a>
-					<div class="dropdown-menu">
-						<a href="{% url 'volfood' %}" class="dropdown-item">Food</a>
-						<a href="{% url 'volbeds' %}" class="dropdown-item">Beds</a>
-						<a href="{% url 'volinjection' %}" class="dropdown-item">Injections</a>
-						<a href="{% url 'voloxygen' %}" class="dropdown-item">Oxygen</a>
-						<a href="{% url 'volplasma' %}" class="dropdown-item">Plasma</a>
-					</div>
-				</div>
-				{% else %}
-				<a href="{% url 'volForm' %}" class="nav-item nav-link">Be A Volunteer</a> 
-				{% endif %} {% endcomment %}
-
-				<a href="/discussions/" class="nav-item nav-link">Discussion</a>
-				{% if request.user.is_authenticated %}
-				<div class="nav-item dropdown">
-					<a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Welcome
-						{{request.user.username}} <span><i class="fa fa-caret-down"></i></span></a>
-					<div class="dropdown-menu">
-						<a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
-					</div>
-				</div>
-				{% else %}
-				<div class="nav-item dropdown login-dropdown">
-					<a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle mr-4 sign-up-btn"
-						id="login_button">Login</a>
-					{% comment %} <div class="dropdown-menu action-form" id="login_dropdown">
-						<form action="{% url 'login' %}" method="post">{% csrf_token %}
-							<div class="form-group social-btn clearfix">
-								<a class="btn btn-outline-dark" href="{% provider_login_url 'google' %}"
-									style="background-color: white;color:black;width:100%" role="button"
-									style="text-transform:none">
-									<img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
-										src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-									Login with Google
-								</a>
-							</div>
-							<div class="or-seperator"><b>or</b></div>
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Username" required="required"
-									name="login_username" id="login_username">
-							</div>
-							<div class="form-group">
-								<input type="password" class="form-control" placeholder="Password" required="required"
-									name="login_password">
-							</div>
-							<input type="submit" class="btn btn-primary btn-block" value="Login">
-							<div class="text-center mt-2">
-								<a href="/password_reset">Forgot Your password?</a>
-							</div>
-						</form>
-					</div> {% endcomment %}
-				</div>
+				<a href="/donor/hospitalleads" class="nav-item nav-link">All Hospitals</a>
+				<a href="/donor/under-verification" class="nav-item nav-link">Verified Hospitals</a>
+				<a href="/donations" class="nav-item nav-link">Donation History</a>
+				
 				<br>
 				<div class="nav-item dropdown">
 					<a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn">Sign up</a>
@@ -168,7 +104,6 @@
 						</form>
 					</div>
 				</div>
-				{% endif %}
 			</div>
 		</div>
 	</nav>
@@ -208,7 +143,7 @@
 					<p class="browse_text" style="color:black">Do you want to donate to the Ukranians in need?
 					</p>
 					<div class="banner_bt">
-						<a href="/donations/plasma/"><button class="read_bt" style="background-color:#47E0B0">Contribute Now</button></a>
+						<a href="/donor/under-verification"><button class="read_bt" style="background-color:#47E0B0">Donate Now</button></a>
 					</div>
 				</div>
 			</div>
