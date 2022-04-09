@@ -1,0 +1,74 @@
+{% if msg %}
+<script>
+    alert('{{ msg }}');
+</script>
+{% endif %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/media/css/login.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="info">
+            <h1>SignUp/Login</h1>
+        </div>
+    </div>
+    <div class="form">
+        <div class="thumbnail"><img src="/media/images/patient-login.png" /></div>
+        <form class="register-form" action="{% url 'handleSignUpDonor' %}" id="signupForm" enctype="multipart/form-data" method="post">{% csrf_token %}
+            <input type="text" name="fname" placeholder="First Name" />
+            <input type="text" name="lname" placeholder="Last Name" />
+            <input type="email" name="email_add" placeholder="Email Address" />
+            <input type="text" name="acc_address" placeholder="Account Address" />
+            <input type="password" name="password" placeholder="Password" />
+            <div style="padding: 12px">
+                <label for="is_hospital">Are you a Hospital?</label>
+                <input type="radio" style="width: 24% !important;padding-top: 0px !important;margin-top: 2px !important;" name="is_other" value="is_hospital" id="is_hospital" onclick="hospital_details()"/>
+            </div>
+            <div style="padding: 12px">
+                <label for="is_patient">Are you a Patient?</label>
+                <input type="radio" style="width: 24% !important;padding-top: 0px !important;margin-top: 2px !important;" name="is_other" value="is_patient"  id="is_patient" onclick="patient_details()"/>
+            </div>
+            <input type="number" name="age" id="age" placeholder="Age" />
+            <input type="text" name="gender" id="gender" placeholder="Gender" />
+            <input type="text" name="location" id="location" placeholder="Location Link" />
+            <span id="patient_proof" >
+            <p>Patient Proof</p>
+            <input type="file" name="patient_proof" id="patient_proof" placeholder="Patient Proof" multiple>
+            </span>
+           
+            <button type="submit">Sign Up</button>
+            <p class="message">Already registered?<a href="#"> Sign In</a></p>
+        </form>
+        <form class="login-form" action="{% url 'handleLogin' %}" method="post"> {% csrf_token %}
+            <input type="email" name="email" placeholder="Email Address" />
+            <input type="password" name="password" placeholder="Password" />
+            <button type="submit">Login</button>
+            <p class="message">Not registered?<a href="#"> Create an account</a></p>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+
+        $('.message a').click(function(){
+            $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+         });
+
+    </script>
+    <script src="/media/js/login.js"></script>
+</body>
+
+</html>
