@@ -28,3 +28,7 @@ def hospital_donation_request(request):
 
 def hospital_verify_donor(request):
     return render(request,'hospital/hospitalverifydonor.html')
+
+
+def patient_hleads(request):
+    return render(request,'patient/hleads.html')

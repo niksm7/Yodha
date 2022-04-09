@@ -13,5 +13,6 @@ urlpatterns = [
     path('donations',views.donations,name="donations"),
     path('hospital/hospitaladd',views.hospital_add,name="hospitaladd"),
     path('hospital/hospitaldonationrequest',views.hospital_donation_request,name="hospitaldonationrequest"),
-    path('hospital/hospitalverifydonor',views.hospital_verify_donor,name="hospitalverifydonor")
+    path('hospital/hospitalverifydonor',views.hospital_verify_donor,name="hospitalverifydonor"),
+    path('patient/patienthleads',views.patient_hleads,name="patienthleads")
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
