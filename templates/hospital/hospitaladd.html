@@ -1,0 +1,73 @@
+{% extends 'basic.html' %} {% block basic_title %} Yodha :: Hospitals - Add Services{% endblock basic_title %} {% block basic_head %}
+<link rel="stylesheet" href="/media/css/hospitaladd.css"> {% endblock basic_head %} {% block basic_body %}
+
+
+
+
+<div class="container-fluid wrapper">
+    <form class="form" action="" method="">
+        <label>
+      <input id="hname" type="text" placeholder="City Hospital" disabled>
+      <span>Hospital name</span>
+    </label>
+
+        <div class="select">
+            <select name="options" id="options" onchange="callChange()">
+           <option selected disabled>Choose what to add?</option>
+           <option value="Medicine">Medicine</option>
+           <option value="Service">Service</option>
+        </select>
+        </div>
+
+        <div id="service-form">
+            <label class="mt-4">
+        <input id="stype" type="text" placeholder="Service name">
+        <span>Service type</span>
+      </label>
+
+            <label>
+        <input id = "scost" type="text" placeholder="Service Cost">
+        <span>Service cost</span>
+      </label>
+        </div>
+
+
+        <div id="medicine-form">
+            <label class="mt-4">
+            <input type ="text" placeholder="Medicine name">
+            <span>Medicine Name</span>
+          </label>
+
+            <label>
+            <input type="text" placeholder="Medicine Cost">
+            <span>Medicine cost</span>
+          </label>
+        </div>
+
+
+        <input type="submit" class="btn btn-primary mt-1" value="Add">
+</div>
+
+</form>
+
+</div>
+
+{% endblock basic_body %} {% block basic_scripts %}
+<script>
+    document.getElementById("service-form").style.display = "none";
+    document.getElementById("medicine-form").style.display = "none";
+    const callChange = () => {
+        var select = document.getElementById('options');
+        var value = select.options[select.selectedIndex].value;
+        if (value == "Medicine") {
+            document.getElementById("service-form").style.display = "none";
+            document.getElementById("medicine-form").style.display = "block";
+        }
+        if (value == "Service") {
+            document.getElementById("medicine-form").style.display = "none";
+            document.getElementById("service-form").style.display = "block";
+        }
+    }
+</script>
+
+{% endblock basic_scripts %}

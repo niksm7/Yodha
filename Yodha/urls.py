@@ -11,4 +11,7 @@ urlpatterns = [
     path('',views.home,name="home"),
     path('donor/under-verification',views.under_verification,name="under_verification"),
     path('donations',views.donations,name="donations"),
+    path('hospital/hospitaladd',views.hospital_add,name="hospitaladd"),
+    path('hospital/hospitaldonationrequest',views.hospital_donation_request,name="hospitaldonationrequest"),
+    path('hospital/hospitalverifydonor',views.hospital_verify_donor,name="hospitalverifydonor")
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

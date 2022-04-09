@@ -18,3 +18,13 @@ def donations(request):
     return render(request,'donor/donations.html')
 
 
+
+def hospital_add(request):
+    return render(request,'hospital/hospitaladd.html')
+
+
+def hospital_donation_request(request):
+    return render(request,'hospital/hospitaldonationrequest.html')
+
+def hospital_verify_donor(request):
+    return render(request,'hospital/hospitalverifydonor.html')
