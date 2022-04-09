@@ -56,7 +56,7 @@ form label input.populated+span {
 }
 
 form label span {
-    color: #35dc9b;
+    color: #3DCEA0;
     font: 13px Helvetica, Arial, sans-serif;
     position: absolute;
     top: 0px;
@@ -69,13 +69,13 @@ form label span {
     transition: all 0.2s ease-in-out;
     font: 18px Helvetica, Arial, sans-serif;
     border: none;
-    background: #1aaf75;
+    background: #3DCEA0;
     color: #fff;
     padding: 16px 40px;
 }
 
 .form input[type="submit"]:hover {
-    background: #109f67;
+    background: #3DCEA0;
 }
 
 select {
@@ -124,5 +124,5 @@ select::-ms-expand {
 }
 
 .select:hover::after {
-    color: #23b499;
+    color: #3DCEA0;
 }

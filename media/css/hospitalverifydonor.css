@@ -30,7 +30,7 @@ table tr {
 }
 
 table thead tr:first-child {
-    border: 1px solid #0f82e6;
+    border: 1px solid #04ABB5;
 }
 
 table th,
@@ -39,7 +39,7 @@ table td {
     text-align: center;
     /* color: #9da9b9; */
     font-size: 14px;
-    font-family: cursive;
+    font-family: inherit;
 }
 
 table td:nth-child(4) {
@@ -50,8 +50,9 @@ table th {
     font-size: .85em;
     letter-spacing: .1em;
     text-transform: uppercase;
-    background: #0f82e6;
+    background-color: #04ABB5;
     color: #FFF;
+    border: none;
 }
 
 table tbody tr td .btn-invoice {
