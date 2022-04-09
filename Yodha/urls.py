@@ -14,5 +14,6 @@ urlpatterns = [
     path('hospital/hospitaladd',views.hospital_add,name="hospitaladd"),
     path('hospital/hospitaldonationrequest',views.hospital_donation_request,name="hospitaldonationrequest"),
     path('hospital/hospitalverifydonor',views.hospital_verify_donor,name="hospitalverifydonor"),
-    path('patient/patienthleads',views.patient_hleads,name="patienthleads")
+    path('patient/patienthleads',views.patient_hleads,name="patienthleads"),
+    path('patient/shop',views.patient_shop,name="patient_shop"),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

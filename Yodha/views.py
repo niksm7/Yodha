@@ -32,3 +32,6 @@ def hospital_verify_donor(request):
 
 def patient_hleads(request):
     return render(request,'patient/hleads.html')
+
+def patient_shop(request):
+    return render(request,'patient/shop.html')
