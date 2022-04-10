@@ -215,7 +215,7 @@ var shoppingCart = (function() {
   var token_contract = ""
   var operations_contract = ""
   const address_token_contract = "0x29f54D028a811c00bF25cabe3b10BcF774525807"
-  const address_operations = "0xc3E08895515aBa848ee0A2d01218335B72DB8376"
+  const address_operations = "0x6A2f321aF2FC25E29A4c16e51158C360Fe630829"
   
   const web = new Web3("https://rinkeby.infura.io/v3/384b2420ae804f5ca4b5d6aa630f3c7b")
   
@@ -230,7 +230,7 @@ var shoppingCart = (function() {
   });
   
   $.ajax({
-      url: "https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=0xc3E08895515aBa848ee0A2d01218335B72DB8376&apikey=39MRYT8W4D35AH26BJZVGQ1KK19SR5XWXG",
+      url: "https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=0x6A2f321aF2FC25E29A4c16e51158C360Fe630829&apikey=39MRYT8W4D35AH26BJZVGQ1KK19SR5XWXG",
       dataType: "json",
       success: function (data) {
           operations_contract = new web.eth.Contract(JSON.parse(data.result), address_operations)
@@ -302,4 +302,13 @@ var shoppingCart = (function() {
 
     transaction1 = operations_contract.methods.requestDonation(patient_id, hosp_id, medicine_list, service_list, 0)
     tx = await send(transaction1)
+    $.ajax({
+      url: "/patientshareidentity/",
+      dataType: "json",
+      data: {"hosp_id":hosp_id},
+      success: function (data) {
+        console.log(data)
+        }
+    });
+    
   }

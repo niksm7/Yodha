@@ -73,90 +73,32 @@ async function send(transaction, value = 0) {
 }
 
 
-
-
-
-$(document).ready(function(){
-	$(".btn-group .btn").click(function(){
-		var inputValue = $(this).find("input").val();
-		if(inputValue != 'all'){
-			var target = $('table tr[data-status="' + inputValue + '"]');
-			$("table tbody tr").not(target).hide();
-			target.fadeIn();
-		} else {
-			$("table tbody tr").fadeIn();
-		}
-	});
-	// Changing the class of status label to support Bootstrap 4
-    var bs = $.fn.tooltip.Constructor.VERSION;
-    var str = bs.split(".");
-    if(str[0] == 4){
-        $(".label").each(function(){
-        	var classStr = $(this).attr("class");
-            var newClassStr = classStr.replace(/label/g, "badge");
-            $(this).removeAttr("class").addClass(newClassStr);
-        });
-    }
-});
-
-$(document).ready(function() {
-
-	$('.open-form').click(function() {
-		$('.form-popup').show();
-	});
-	$('.close-form').click(function() {
-		$('.form-popup').hide();
-	});
-  
-	$('.reset-form').click(function() {
-		$('.success-message').show();
-    $('#my-form').trigger( 'reset' );
-
-    setTimeout(function() {
-	    $('.success-message').hide()
-    }, 1500);
-	});
-
-	$(document).mouseup(function(e) {
-		var container = $(".form-wrapper");
-		var form = $(".form-popup");
-
-		if (!container.is(e.target) && container.has(e.target).length === 0) {
-			form.hide();
-		}
-	});
-
-
-});
-
-
-async function payDonation(hash){
-	web.eth.getTransactionReceipt(hash, async function (err, receipt) {
-        if (err) {
-            console.log(err)
-        }
-
-        if (receipt !== null) {
-            try {
-				total_amount = parseInt($("#donation_amount").val())*(10**18)
-                transaction2 = operations_contract.methods.donateAmount($("#donor_id").val(), $("#receiver_id").val(), $("#receiver_acc").val(), address_token_contract, total_amount.toString())
-                tx2 = await send(transaction2)
-            } catch (e) {
-                console.log(e)
+function display_data(){
+    console.log("Here")
+    var data = new FormData($('#password_form').get(0));
+	$.ajax({
+        type: $('#password_form').attr('method'),
+        url: $('#password_form').attr('action'),
+        data: data,
+		processData: false,
+        contentType: false,
+        success: function (data) {
+            $("#patient_name").html(data.name)
+            $("#patient_age").html(data.age)
+            $("#patient_gender").html(data.gender)
+            ipfs_hashes = data.ipfs_hashes
+            for (let index = 0; index < ipfs_hashes.length; index++) {
+                curr_hash = ipfs_hashes[index]
+                $("#proof_document").append(`
+                    <a href="/getfileipfs/${curr_hash}/${data.patient_id}" target="_blank" type="button">See Document</a>
+                `)
             }
-        } else {
-            // Try again in 1 second
-            window.setTimeout(function () {
-                payDonation(hash);
-            }, 1000);
         }
     });
 }
 
+async function accept_donation(){
+    transaction1 = operations_contract.methods.patientDonation($("#donation_id").html(), address_token_contract)
 
-async function approve_donation(){
-	total_amount = parseInt($("#donation_amount").val())*(10**18)
-	transaction1 = token_contract.methods.approve(address_operations, total_amount.toString())
     tx = await send(transaction1)
-    payDonation(tx.toString())
 }

@@ -25,4 +25,7 @@ urlpatterns = [
     path('uploadipfs/', views.uploadIPFS, name='uploadIPFS'),
     path('sendverification/', views.sendVerification, name='sendVerification'),
     path('verifyrequest/', views.verifyVerificationRequest, name='verifyVerificationRequest'),
+    path('patientshareidentity/', views.patientShareIdentity, name='patientShareIdentity'),
+    path('getpatientdetails/', views.getPatientdetails, name='patientShareIdentity'),
+    path('getfileipfs/<str:ipfs_hash>/<str:patient_id>', views.getFileIPFS, name='getFileIPFS'),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

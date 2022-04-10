@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, reverse
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponse, FileResponse
 import os
 import base64
 import pyrebase
@@ -20,6 +20,8 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 import ast
+import urllib.request
+import tempfile
 
 
 config = {
@@ -79,7 +81,13 @@ def hospital_add(request):
 
 
 def hospital_donation_request(request):
-    return render(request,'hospital/hospitaldonationrequest.html')
+    all_requested_donations = operations_contract.functions.getHospitalRDonations(request.session["uid"]).call()
+    all_requests = []
+    for donation in all_requested_donations:
+        curr_donation = operations_contract.functions.id_to_request_donation(donation).call()
+        all_requests.append(curr_donation)
+    print(all_requests)
+    return render(request,'hospital/hospitaldonationrequest.html',{"all_requests":all_requests})
 
 def hospital_verify_donor(request):
     all_verification_requests = VerificationRequests.objects.filter(hosp_id=request.session['uid'])
@@ -253,7 +261,7 @@ def handleSignUpPatient(request):
 
         name = fernet.encrypt((request.POST.get("fname") + " " + request.POST.get("lname")).encode()).decode()
         email = request.POST.get("email_add")
-        acc_address = fernet.encrypt(request.POST.get("acc_address").encode()).decode()
+        acc_address = web.toChecksumAddress(request.POST.get("acc_address"))
         age = fernet.encrypt(request.POST.get("age").encode()).decode()
         gender = fernet.encrypt(request.POST.get("gender").encode()).decode()
         validation_proofs = request.FILES.getlist("patient_proof")
@@ -340,3 +348,84 @@ def verifyVerificationRequest(request):
     curr_req.save()
 
     return JsonResponse({"check_string":check_string})
+
+
+def getPatientdetails(request):
+    patient_address = request.POST.get("curr_patient")
+    patient_id = WebUser.objects.filter(account_address=patient_address)[0].id
+    password = request.POST.get("password")
+    pvt_enc_key = operations_contract.functions.user_to_pvtkey(request.session['uid']).call()
+    pvt_key = password_decrypt(pvt_enc_key, password).decode()
+    pvt_key = PKCS1_OAEP.new(RSA.import_key(pvt_key))
+
+    user = WebUser.objects.filter(id=patient_id)[0]
+
+    all_fkeys = ast.literal_eval(user.fernet_keys)
+
+    enc_fernet_key = base64.b64decode(all_fkeys[request.session['uid']])
+
+    fernet_key = pvt_key.decrypt(enc_fernet_key).decode()
+
+    patient_info = operations_contract.functions.id_to_patient(patient_id).call()
+
+    fernet = Fernet(fernet_key)
+
+    name = str(fernet.decrypt(patient_info[1].encode()).decode())
+    age = str(fernet.decrypt(patient_info[2].encode()).decode())
+    gender = str(fernet.decrypt(patient_info[3].encode()).decode())
+    ipfs_hashes = ast.literal_eval(patient_info[4])
+
+
+    return JsonResponse({"name":name, "age":age, "gender":gender, "patient_id":patient_info[0], "ipfs_hashes":ipfs_hashes})
+
+
+def patientShareIdentity(request):
+
+    hosp_id = request.GET.get("hosp_id")
+
+    pvt_enc_key = operations_contract.functions.user_to_pvtkey(request.session['uid']).call()
+    pvt_key = password_decrypt(pvt_enc_key, request.session["pass"]).decode()
+    pvt_key = PKCS1_OAEP.new(RSA.import_key(pvt_key))
+
+    user = WebUser.objects.filter(id=request.session['uid'])[0]
+
+    all_fkeys = ast.literal_eval(user.fernet_keys)
+
+    enc_fernet_key = base64.b64decode(all_fkeys[request.session['uid']])
+
+    fernet_key = pvt_key.decrypt(enc_fernet_key).decode()
+
+    hosp_public_key = operations_contract.functions.user_to_pubkey(hosp_id).call()
+    hosp_public_key = hosp_public_key.encode()
+    hosp_public_key  = PKCS1_OAEP.new(RSA.import_key(hosp_public_key))
+    hosp_fkey = base64.b64encode(hosp_public_key.encrypt(fernet_key.encode()))
+
+    all_fkeys[hosp_id] = hosp_fkey
+
+    user.fernet_keys = all_fkeys
+
+    user.save()
+
+    return JsonResponse({"success":"ok"})
+
+
+def getFileIPFS(request, ipfs_hash, patient_id):
+    pvt_enc_key = operations_contract.functions.user_to_pvtkey(request.session['uid']).call()
+    pvt_key = password_decrypt(pvt_enc_key, request.session["pass"])
+    pvt_key = PKCS1_OAEP.new(RSA.import_key(pvt_key))
+
+    user = WebUser.objects.filter(id=patient_id)[0]
+
+    all_fkeys = ast.literal_eval(user.fernet_keys)
+
+    enc_fernet_key = base64.b64decode(all_fkeys[request.session['uid']])
+
+    fernet_key = pvt_key.decrypt(enc_fernet_key).decode()
+
+    data = urllib.request.urlopen("https://ipfs.io/ipfs/{}".format(ipfs_hash))
+    file_db = HashFileType.objects.filter(hash_val=ipfs_hash)[0]
+    f = tempfile.NamedTemporaryFile(suffix=file_db.suffix_ext, prefix=file_db.prefix_name)
+    fer = Fernet(fernet_key)
+    decrypted_content = fer.decrypt(data.read())
+    f.write(decrypted_content)
+    return FileResponse(open(os.path.abspath(f.name) ,'rb'))
