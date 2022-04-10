@@ -37,6 +37,9 @@ class HashFileType(models.Model):
 class VerificationRequests(models.Model):
     hosp_id = models.TextField()
     donor_id = models.TextField()
+    hosp_address = models.CharField(max_length=400)
     donor_name = models.CharField(max_length=500)
+    hosp_name = models.CharField(max_length=500)
     verification_string = models.TextField()
-    submitted_string = models.TextField()
+    submitted_string = models.TextField(null=True, blank=True)
+    is_verified = models.BooleanField(default=False)

@@ -50,7 +50,25 @@ def home(request):
     return render(request,'home.html')
 
 def under_verification(request):
-    return render(request,'donor/under_verification.html')
+    all_verification_requests = VerificationRequests.objects.filter(donor_id=request.session['uid'])
+    
+    for verif_requests in all_verification_requests:
+        if not verif_requests.is_verified and verif_requests.submitted_string != "":
+            user = WebUser.objects.filter(id=request.session['uid'])[0]
+            pvt_enc_key = operations_contract.functions.user_to_pvtkey(request.session['uid']).call()
+            pvt_key = password_decrypt(pvt_enc_key, request.session["pass"]).decode()
+            curr_req_string = base64.b64decode(ast.literal_eval(verif_requests.verification_string)[request.session['uid']])
+            pvt_key = PKCS1_OAEP.new(RSA.import_key(pvt_key))
+            check_string = pvt_key.decrypt(curr_req_string).decode()
+
+            if check_string == verif_requests.submitted_string:
+                verif_requests.is_verified = True
+                verif_requests.save()
+
+
+    all_verification_requests = VerificationRequests.objects.filter(donor_id=request.session['uid'])
+
+    return render(request,'donor/under_verification.html',{"all_verification_requests":all_verification_requests})
 
 def donations(request):
     return render(request,'donor/donations.html')
@@ -64,7 +82,6 @@ def hospital_donation_request(request):
     return render(request,'hospital/hospitaldonationrequest.html')
 
 def hospital_verify_donor(request):
-    print(request.session['uid'])
     all_verification_requests = VerificationRequests.objects.filter(hosp_id=request.session['uid'])
     return render(request,'hospital/hospitalverifydonor.html',{"all_verification_requests":all_verification_requests})
 
@@ -95,11 +112,11 @@ def handleLogin(request):
                     message = "Please verify the email! Link has been sent!"
                 return render(request, 'login.html', {"msg": message})
             else:
-                
                 session_id = user['localId']
                 request.session['email'] = email
                 request.session['usrname'] = email.split("@")[0]
                 request.session['uid'] = str(session_id)
+                request.session["pass"] = password
 
                 user = WebUser.objects.filter(id=request.session['uid'])[0]
 
@@ -279,13 +296,14 @@ def sendVerification(request):
     hosp_verif_key = base64.b64encode(hosp_public_key.encrypt(verification_string.encode()))
 
     donor = WebUser.objects.filter(id=request.session['uid'])[0]
+    hosp = WebUser.objects.filter(id=request.session['uid'])[0]
 
     donor_public_key = operations_contract.functions.user_to_pubkey(request.session['uid']).call()
     donor_public_key = donor_public_key.encode()
     donor_public_key  = PKCS1_OAEP.new(RSA.import_key(donor_public_key))
     donor_verif_key = base64.b64encode(donor_public_key.encrypt(verification_string.encode()))
 
-    new_verif_req = VerificationRequests(hosp_id=hosp_id, donor_id=request.session['uid'], donor_name=donor.name, verification_string={hosp_id:hosp_verif_key.decode(), request.session['uid']:donor_verif_key.decode()})
+    new_verif_req = VerificationRequests(hosp_id=hosp_id, donor_id=request.session['uid'], hosp_address=hosp.account_address, donor_name=donor.name, hosp_name=hosp.name, verification_string={hosp_id:hosp_verif_key.decode(), request.session['uid']:donor_verif_key.decode()})
 
     new_verif_req.save()
 

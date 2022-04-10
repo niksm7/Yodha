@@ -26,11 +26,11 @@
                             <input type="radio" name="status" value="all" style="visibility:hidden;" checked="checked">
                         </label>
                         <label class="btn btn-success">
-                            <span style="margin-right: -10px;">Under Verification</span>
+                            <span style="margin-right: -10px;">Verified</span>
                             <input type="radio" name="status" value="active" style="visibility:hidden;">
                         </label>
                         <label class="btn btn-danger">
-                            <span style="margin-right: -10px;">Verified</span>
+                            <span style="margin-right: -10px;">Under Verification</span>
                             <input type="radio" name="status" value="expired" style="visibility:hidden;">
                         </label>
 
@@ -43,128 +43,57 @@
                 <tr>
                     <th>Sr.</th>
                     <th>Hospital Name</th>
-                    <th>Requirements</th>
+                    <th>String Submitted</th>
                     <th>Contact</th>
-                    <th>Country</th>
                     <th>Verification Status</th>
                     <th>Donation</th>
                 </tr>
             </thead>
             <tbody>
-                
+                <input type="text" name="donor_id" id="donor_id" hidden>
+                <input type="text" name="receiver_id" id="receiver_id" hidden>
+                <input type="text" name="receiver_acc" id="receiver_acc" hidden>
+                {% for req in all_verification_requests %}
+                {% if req.is_verified %}
                 <tr data-status="active">
-                    <td style="color: #FFAE42;">#1</td>
-                    <td>City Hospital</td>
-                    <td>Medicines, Oxygen Cylinders, Medical Equipment</td>
+                {% else %}
+                <tr data-status="expired">
+                {% endif %}
+                    <td style="color: #FFAE42;">#{{forloop.counter}}</td>
+                    <td>{{req.hosp_name}}</td>
+                    <td>{{req.submitted_string}}</td>
                     <td>9876543210</td>
-                    <td>Ukraine</td>
-                    <td><a href="#" class="btn btn-sm manage">Under Verification</a></td>
-                    <td><a href="#" class="btn btn-sm manage">Donate</a></td>
-                </tr>
-
-                <tr data-status="active">
-                    <td style="color: #FFAE42;">#2</td>
-                    <td>ABC Hospital</td>
-                    <td>Medical Equipment, Funds, Ration Kits</td>
-                    <td>9876543210</td>
-                    <td>Ukraine</td>
+                    {% if req.is_verified %}
                     <td><a href="#" class="btn btn-sm manage">Verified</a></td>
-                    <td><a href="#" class="btn btn-sm manage">Donate</a></td>
-                </tr>
-
-                <tr data-status="active">
-                    <td style="color: #FFAE42;">#3</td>
-                    <td>XYZ Hospital</td>
-                    <td>Medicines, Oxygen Cylinders, Funds, Ration Kits</td>
-                    <td>9876543210</td>
-                    <td>Ukraine</td>
+                    {% else %}
                     <td><a href="#" class="btn btn-sm manage">Under Verification</a></td>
-                    <td><a href="#" class="btn btn-sm manage">Donate</a></td>
+                    {% endif %}
+                    <td><button type="button" class="btn btn-md manage" data-toggle="modal" data-target="#exampleModal" onclick="set_details('{{req.donor_id}}','{{req.hosp_id}}','{{req.hosp_address}}')">
+                        Donate
+                      </button></td>
                 </tr>
-    
-               
-                <div class="form-popup">
-                    <div class="container form-wrapper">
-                        <button class="btn close-form">Close</button>
-                        <form id="my-form" novalidate="novalidate" action="#" method="POST">
-                            {% csrf_token %}
-                            <input type="text" id="form_id" hidden name="form_id">
-                            <div class="row">
-                                <div class="col-md-12 text-center">
-                                    <h1 class="form-title">Food Supplier Details</h1>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="food_supplier_name"
-                                        name="food_supplier_name" required="">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="email">E-mail</label>
-                                    <input type="text" class="form-control" id="food_supplier_email"
-                                        name="food_supplier_email" required="">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="email">Contact</label>
-                                    <input type="text" class="form-control" id="food_supplier_contact"
-                                        name="food_supplier_contact" required="">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="email">City</label>
-                                    <input type="text" class="form-control" id="food_supplier_city"
-                                        name="food_supplier_city" required="">
-                                </div>
-
-                                <div class="form-group col-md-12">
-                                    <label for="email">Address</label>
-                                    <textarea type="text" class="form-control" id="food_supplier_address"
-                                        name="food_supplier_address" required=""></textarea>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="email">Service Type</label><br>
-                                    <input type="radio" id="food_supplier_service_free" name="food_supplier_service"
-                                        value="Free">
-                                    <label for="food_supplier_service_free">Free</label><br>
-                                    <input type="radio" id="food_supplier_service_paid" name="food_supplier_service"
-                                        value="Paid">
-                                    <label for="food_supplier_service_paid">Paid</label><br>
-                                    <input type="radio" id="food_supplier_service_dn" name="food_supplier_service"
-                                        value="Don't Know">
-                                    <label for="food_supplier_service_dn">Don't Know</label><br>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="email">User Verification</label><br>
-                                    <input type="radio" id="food_supplier_verify_verified" name="food_supplier_verify"
-                                        value="Verified">
-                                    <label for="Verified">Verified</label><br>
-                                    <input type="radio" id="food_supplier_verify_unverified" name="food_supplier_verify"
-                                        value="Unverified">
-                                    <label for="Unverified">Unverified</label><br>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="verify">Volunteer Verification</label><br>
-                                    <input type="radio" id="food_supplier_vol_verify" name="food_supplier_vol_verify"
-                                        value="Verified">
-                                    <label for="food_supplier_vol_verify">Verified</label><br>
-                                    <input type="radio" id="food_supplier_vol_unverify" name="food_supplier_vol_verify"
-                                        value="Unverified">
-                                    <label for="food_supplier_vol_unverify">Unverified</label><br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-12">
-                                    <label for="something">Additional Details</label>
-                                    <textarea name="food_supplier_details" class="form-control"
-                                        id="food_supplier_details"></textarea>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn send-form">Save</button>
-                        </form>
+                {% endfor %}
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="number" name="donation_amount" id="donation_amount">
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="approve_donation()">Save changes</button>
+                        </div>
+                    </div>
                     </div>
                 </div>
-
 
             </tbody>
         </table>
@@ -174,13 +103,17 @@
 {% block basic_scripts %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 <script src="/media/js/volunteer.js"></script>
 
 <script>
     document.getElementById("food_supplier_verify_verified").disabled = true;
     document.getElementById("food_supplier_verify_unverified").disabled = true;
 
-   
-
+    function set_details(donor_id, hosp_id, receiver_acc){
+        $("#donor_id").val(donor_id)
+        $("#receiver_id").val(hosp_id)
+        $("#receiver_acc").val(receiver_acc)
+    }
 </script>
 {% endblock basic_scripts %}
