@@ -40,13 +40,20 @@
 	{% endblock css %}
 	<link rel="stylesheet" type="text/css" href="/media/css/filter.css">
 	<link rel="stylesheet" href="/media/css/responsive.css">
-
+	<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+	<df-messenger
+	chat-icon="https:&#x2F;&#x2F;squareselect.in&#x2F;wp-content&#x2F;uploads&#x2F;2022&#x2F;03&#x2F;donate.png"
+	intent="WELCOME"
+	chat-title="Yodha-Bot"
+	agent-id="567b0efb-7b96-4dc1-9427-1715cf7c4746"
+	language-code="en"
+	></df-messenger>
 
 </head>
 
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="justify-self: normal;">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="justify-self: normal;" id="filter_nav">
 		<div class="d-flex flex-nowrap w-100">
 			<a href="/" class="navbar-brand"><img style="width: 40%;" src="/media/images/logo_medium.png" alt=""></a>
 			<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -60,50 +67,13 @@
 				<a href="/" class="nav-item nav-link">Home</a>
 				<a href="/donor/hospitalleads" class="nav-item nav-link">All Hospitals</a>
 				<a href="/donor/under-verification" class="nav-item nav-link">Verified Hospitals</a>
-				<a href="/donations" class="nav-item nav-link">Donation History</a>
+				{% comment %} <a href="/donations" class="nav-item nav-link">Donation History</a> {% endcomment %}
+				<div class="nav-item dropdown login-dropdown">
+					<a href="/loginpage" class="btn btn-primary mr-4 sign-up-btn"
+						id="login_button">Login</a>
+				</div>
 				
 				<br>
-				<div class="nav-item dropdown">
-					<a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle sign-up-btn">Sign up</a>
-					<div class="dropdown-menu action-form">
-						<form action="#" id="signupForm" method="post">{% csrf_token %}
-							{% comment %} <div class="form-group social-btn clearfix">
-								<a class="btn btn-outline-dark" href="{% provider_login_url 'google' %}"
-									style="background-color: white;color:black;width:100%" role="button"
-									style="text-transform:none">
-									<img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
-										src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
-									Login with Google
-								</a>
-							</div> {% endcomment %}
-							<div class="or-seperator"><b>or</b></div>
-							<p class="hint-text">Fill in this form to create your account!</p>
-							<div class="form-group">
-								<input type="text" id="signup_username" class="form-control" placeholder="Username"
-									required="required" name="username">
-							</div>
-							<div class="form-group">
-								<input type="email" class="form-control" placeholder="Email" required="required"
-									name="email">
-							</div>
-							<div class="form-group">
-								<input type="password" id="signup_pass1" class="form-control" placeholder="Password"
-									required="required" name="pass1">
-							</div>
-							<div class="form-group">
-								<input type="password" id="signup_pass2" class="form-control"
-									placeholder="Confirm Password" required="required" name="pass2">
-							</div>
-							<div class="alert alert-danger" id="password-mismatch" role="alert" hidden="true">
-								Passwords don't match!
-							</div>
-							<div class="alert alert-danger" id="username-unavailable" role="alert" hidden="true">
-								Username not available!
-							</div>
-							<input class="btn btn-primary btn-block" value="Sign up" onclick="formCheck()">
-						</form>
-					</div>
-				</div>
 			</div>
 		</div>
 	</nav>

@@ -20,7 +20,14 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="/media/css/basic.css">
-
+	<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+	<df-messenger
+	chat-icon="https:&#x2F;&#x2F;squareselect.in&#x2F;wp-content&#x2F;uploads&#x2F;2022&#x2F;03&#x2F;donate.png"
+	intent="WELCOME"
+	chat-title="Yodha-Bot"
+	agent-id="567b0efb-7b96-4dc1-9427-1715cf7c4746"
+	language-code="en"
+	></df-messenger>
 	{% block basic_head %} {% endblock basic_head %}
 </head>
 
@@ -39,7 +46,11 @@
 				<a href="/" class="nav-item nav-link">Home</a>
 				<a href="/donor/hospitalleads" class="nav-item nav-link">All Hospitals</a>
 				<a href="/donor/under-verification" class="nav-item nav-link">Verified Hospitals</a>
-				<a href="/donations" class="nav-item nav-link">Donation History</a>
+				{% comment %} <a href="/donations" class="nav-item nav-link">Donation History</a> {% endcomment %}
+				<div class="nav-item dropdown login-dropdown">
+					<a href="/loginpage" class="btn btn-primary mr-4 sign-up-btn"
+						id="login_button">Login</a>
+				</div>
 				{% if request.user.is_authenticated %}
 				<div class="nav-item dropdown">
 					{% comment %} <a href="#" data-toggle="dropdown" class="nav-item nav-link dropdown-toggle">Welcome

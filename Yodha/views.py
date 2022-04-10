@@ -172,6 +172,13 @@ def handleLogin(request):
 
                     user.added_blockchain = True
                     user.save()
+                
+                if user.user_type == "donor":
+                    return redirect(reverse("under_verification"))
+                elif user.user_type == "hospital":
+                    return redirect(reverse("hospitaldonationrequest"))
+                else:
+                    return redirect(reverse("patienthleads"))
 
         except Exception as e:
             print(e)
