@@ -214,14 +214,14 @@ var shoppingCart = (function() {
   var current_user_account = ""
   var token_contract = ""
   var operations_contract = ""
-  const address_token_contract = "0x29f54D028a811c00bF25cabe3b10BcF774525807"
-  const address_operations = "0x6A2f321aF2FC25E29A4c16e51158C360Fe630829"
+  const address_token_contract = "YodCoin"
+  const address_operations = ""
   
-  const web = new Web3("https://rinkeby.infura.io/v3/384b2420ae804f5ca4b5d6aa630f3c7b")
+  const web = new Web3("https://rinkeby.infura.io/v3/")
   
   
   $.ajax({
-      url: "https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=0x29f54D028a811c00bF25cabe3b10BcF774525807&apikey=39MRYT8W4D35AH26BJZVGQ1KK19SR5XWXG",
+      url: "https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=YodCoin&apikey=",
       dataType: "json",
       success: function (data) {
           token_contract = new web.eth.Contract(JSON.parse(data.result), address_token_contract)
@@ -230,7 +230,7 @@ var shoppingCart = (function() {
   });
   
   $.ajax({
-      url: "https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=0x6A2f321aF2FC25E29A4c16e51158C360Fe630829&apikey=39MRYT8W4D35AH26BJZVGQ1KK19SR5XWXG",
+      url: "https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=&apikey=",
       dataType: "json",
       success: function (data) {
           operations_contract = new web.eth.Contract(JSON.parse(data.result), address_operations)
