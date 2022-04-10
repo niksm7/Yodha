@@ -14,10 +14,45 @@
 
 <body style="background-color: #F5F5F5;">
 
+    <!-- Nav -->
+    <nav class="navbar bg-inverse fixed-top bg-faded" style="background-color: #364E51 !important;">
+        <div class="row">
+            <a class="navbar-brand" style="padding:0px !important" href="/"><img style="width: 80px;" src="/media/images/main-logo.png" alt=""></a>
+            <a style="color: white;" class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            <a style="color: white;" class="nav-link" href="/shop/">Shop <span class="sr-only">(current)</span></a>
+            <a style="color: white;" class="nav-link" href="/profile/">Profile</a>
+            {% if request.session.uid %}
+            <a style="color: white;" class="nav-link ml-auto" href="/logout/">Logout</a>
+            {% else %}
+            <a href="/loginpage/" class="clear-cart btn ml-auto" style="background-color: #FFFFDD;color:black;margin-right:10px">Login/SignUp</a>
+            {% endif %}
+                <button type="button" class="btn"  style="background-color:#84A98C; color:white; margin-right:10px" data-toggle="modal" data-target="#cart">Cart (<span
+                        class="total-count"></span>)</button>
+                <button class="clear-cart btn btn-danger">Clear
+                    Cart</button>
+        </div>
+    </nav>
+
     <!-- Main -->
     <div class="container" id="main_container">
         <div class="row" id="goods_row">
-
+            {% for ms in medicines_services %}
+                <div class="col">
+                    <div class="card" style="width: 20rem;border-radius: 16px;">
+                        <img class="card-img-top" src="https://ipfs.io/ipfs/{{ms.4}}"
+                            alt="Card image cap">
+                        <div class="card-block" style="text-align: center;">
+                            <h4 class="card-title">{{ms.1}}</h4>
+                            <p class="card-text" style="font-size: 20px;font-weight: 800;"> {% widthratio ms.3 1000000000000000000 1%} YCoin</p>
+                            {% if ms.5 == "medicine" %}
+                            <a href="#" data-name="{{ms.1}}" data-goodid="{{ms.0}}" data-price="{{ms.3}}" data-itemtype="Medicine" style="background-color:#84A98C; color:white;width: 85%;" class="add-to-cart btn ">Add to cart</a>
+                            {% else %}
+                            <a href="#" data-name="{{ms.1}}" data-goodid="{{ms.0}}" data-price="{{ms.3}}" data-itemtype="Service" style="background-color:#84A98C; color:white;width: 85%;" class="add-to-cart btn ">Add to cart</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -44,15 +79,11 @@
                     <table class="show-cart table">
 
                     </table>
-                    <div>Total price: KC<span class="total-cart"></span></div>
+                    <div>Total price: <span class="total-cart"></span> YCoin</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    {% if request.session.uid %}
-                    <button onclick="place_donation()" type="button" class="btn btn-primary">Donate now</button>
-                    {% else %}
-                    <a href="/loginpage/"><button onclick="place_donation()" type="button" class="btn btn-primary">Donate now</button></a>
-                    {% endif %}
+                    <button onclick="request_donation()" type="button" class="btn btn-primary">Request Donation</button>
                 </div>
             </div>
         </div>
@@ -69,6 +100,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
         integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script>
+        var hosp_id = "{{hosp_id | safe}}"
+        var patient_id = "{{request.session.uid | safe}}"
+    </script>
     <script src="/media/js/shop.js"></script>
 </body>
 

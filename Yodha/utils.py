@@ -33,9 +33,9 @@ web.eth.default_account = web.eth.account.privateKeyToAccount(os.getenv("PRIVATE
 # Operations
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
-operations_abi = requests.get("https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=0xd9612684Ba1C26aB59a5A7052B180844CdAf48FA&apikey=39MRYT8W4D35AH26BJZVGQ1KK19SR5XWXG", headers=headers).json()['result']
+operations_abi = requests.get("https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=0xc3E08895515aBa848ee0A2d01218335B72DB8376&apikey=39MRYT8W4D35AH26BJZVGQ1KK19SR5XWXG", headers=headers).json()['result']
 
-operations_address = "0xd9612684Ba1C26aB59a5A7052B180844CdAf48FA"
+operations_address = "0xc3E08895515aBa848ee0A2d01218335B72DB8376"
 
 operations_contract = web.eth.contract(abi=operations_abi, address=operations_address)
 

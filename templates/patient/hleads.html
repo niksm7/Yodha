@@ -5,108 +5,14 @@
 
 {% block body %}
 
-    <div>
-        {% comment %} {% for bed in beds %} {% endcomment %}
-        {% comment %} {% if bed.volunteer_deleted == "No" %} {% endcomment %}
-        <div class="card">
-            <div class="card-text">
-                <div class="portada"  style="background-image: url('/media/images/leads/bed.jpg');">
-                </div>
-                <div class="title-total">
-                    <div class="title">
-                    </div>
-                    <br>
-                    <div class="service-type"><button class="btn warning">Ukranian Hospital</button></div>
-                    <div class="service"><button class="btn info">Request Now</button>
-                    </div>
-                    <div class="verified"><button class="btn success">Verified</button></div>
-                    <div class="contact"><button><i class="fas fa-phone"></i></button>123456789
-                    </div>
-                    <div class="location"><button><i
-                                class="fas fa-dollar-sign"></i></button>Funds Raised : $2900</div>
-                    <h2>City Hospital</h2>
-                    <div class="desc">Hospital urgently needs Medicines, Oxygen Cylinders, Medical Equipment, Funds, Ration Kits</div>
-                    <div class="actions">
-                        <input type="text" value='DETAILS FROM SROT - *Name*: {{ bed.hospital_name }}, *Address*:  {{ bed.hospital_address }}, *Available Beds*: {{ bed.hospital_beds }}, *contact*:{{ bed.hospital_contact }}, *city*:{{ bed.hospital_contact }}' id="copyToClipboardContent{{bed.id}}" style="display: none;">
-
-                        <button onclick="copyToClipboard({{bed.id}})"><i class="far fa-clone"></i></button>
-
-                        <button id="whatsapp_button" onclick="sendWhatsapp('*DETAILS FROM SROT* %0a %0a*Name*: {{ bed.hospital_name | safe}} %0a*Address*:  {{ bed.hospital_address | safe }} %0a*Available Beds*: {{ bed.hospital_beds | safe }} %0a*contact*:{{ bed.hospital_contact | safe }} %0a*city*:{{ bed.hospital_city | safe }}')"><i class="fab fa-whatsapp"></i></button>
-
-                        <button onclick="window.open('https://twitter.com/share?text=*DETAILS FROM SROT* %0a %0a*Name*: {{ bed.hospital_name | safe}} %0a*Address*:  {{ bed.hospital_address | safe }} %0a*Available Beds*: {{ bed.hospital_beds | safe }} %0a*contact*:{{ bed.hospital_contact | safe }} %0a*city*:{{ bed.hospital_city | safe }}')"><i class="fab fa-twitter"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-text">
-                <div class="portada"  style="background-image: url('/media/images/leads/bed.jpg');">
-                </div>
-                <div class="title-total">
-                    <div class="title">
-                    </div>
-                    <br>
-                    <div class="service-type"><button class="btn warning">Ukranian Hospital</button></div>
-                    <div class="service"><button class="btn info">Request Now</button>
-                    </div>
-                    <div class="verified"><button class="btn success">Verified</button></div>
-                    <div class="contact"><button><i class="fas fa-phone"></i></button>123456789
-                    </div>
-                    <div class="location"><button><i
-                                class="fas fa-dollar-sign"></i></button>Funds Raised : $2900</div>
-                    <h2>City Hospital</h2>
-                    <div class="desc">Hospital urgently needs Medicines, Oxygen Cylinders, Medical Equipment, Funds, Ration Kits</div>
-                    <div class="actions">
-                        <input type="text" value='DETAILS FROM SROT - *Name*: {{ bed.hospital_name }}, *Address*:  {{ bed.hospital_address }}, *Available Beds*: {{ bed.hospital_beds }}, *contact*:{{ bed.hospital_contact }}, *city*:{{ bed.hospital_contact }}' id="copyToClipboardContent{{bed.id}}" style="display: none;">
-
-                        <button onclick="copyToClipboard({{bed.id}})"><i class="far fa-clone"></i></button>
-
-                        <button id="whatsapp_button" onclick="sendWhatsapp('*DETAILS FROM SROT* %0a %0a*Name*: {{ bed.hospital_name | safe}} %0a*Address*:  {{ bed.hospital_address | safe }} %0a*Available Beds*: {{ bed.hospital_beds | safe }} %0a*contact*:{{ bed.hospital_contact | safe }} %0a*city*:{{ bed.hospital_city | safe }}')"><i class="fab fa-whatsapp"></i></button>
-
-                        <button onclick="window.open('https://twitter.com/share?text=*DETAILS FROM SROT* %0a %0a*Name*: {{ bed.hospital_name | safe}} %0a*Address*:  {{ bed.hospital_address | safe }} %0a*Available Beds*: {{ bed.hospital_beds | safe }} %0a*contact*:{{ bed.hospital_contact | safe }} %0a*city*:{{ bed.hospital_city | safe }}')"><i class="fab fa-twitter"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-text">
-                <div class="portada"  style="background-image: url('/media/images/leads/bed.jpg');">
-                </div>
-                <div class="title-total">
-                    <div class="title">
-                    </div>
-                    <br>
-                    <div class="service-type"><button class="btn warning">Ukranian Hospital</button></div>
-                    <div class="service"><button class="btn info">Request now</button>
-                    </div>
-                    <div class="verified"><button class="btn success">Verified</button></div>
-                    <div class="contact"><button><i class="fas fa-phone"></i></button>123456789
-                    </div>
-                    <div class="location"><button><i
-                                class="fas fa-dollar-sign"></i></button>Funds Raised : $2900</div>
-                    <h2>City Hospital</h2>
-                    <div class="desc">Hospital urgently needs Medicines, Oxygen Cylinders, Medical Equipment, Funds, Ration Kits</div>
-                    <div class="actions">
-                        <input type="text" value='DETAILS FROM SROT - *Name*: {{ bed.hospital_name }}, *Address*:  {{ bed.hospital_address }}, *Available Beds*: {{ bed.hospital_beds }}, *contact*:{{ bed.hospital_contact }}, *city*:{{ bed.hospital_contact }}' id="copyToClipboardContent{{bed.id}}" style="display: none;">
-
-                        <button onclick="copyToClipboard({{bed.id}})"><i class="far fa-clone"></i></button>
-
-                        <button id="whatsapp_button" onclick="sendWhatsapp('*DETAILS FROM SROT* %0a %0a*Name*: {{ bed.hospital_name | safe}} %0a*Address*:  {{ bed.hospital_address | safe }} %0a*Available Beds*: {{ bed.hospital_beds | safe }} %0a*contact*:{{ bed.hospital_contact | safe }} %0a*city*:{{ bed.hospital_city | safe }}')"><i class="fab fa-whatsapp"></i></button>
-
-                        <button onclick="window.open('https://twitter.com/share?text=*DETAILS FROM SROT* %0a %0a*Name*: {{ bed.hospital_name | safe}} %0a*Address*:  {{ bed.hospital_address | safe }} %0a*Available Beds*: {{ bed.hospital_beds | safe }} %0a*contact*:{{ bed.hospital_contact | safe }} %0a*city*:{{ bed.hospital_city | safe }}')"><i class="fab fa-twitter"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% comment %} {% endif %} {% endcomment %}
-        {% comment %} {% endfor %} {% endcomment %}
-    </div>
+<div id="all_hosps">
+</div>
 
 {% endblock body %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<script src="/media/js/hleads.js"></script>
 <script>
     document.getElementById("beds_filter").selected = true;
 

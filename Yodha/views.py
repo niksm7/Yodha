@@ -89,8 +89,21 @@ def hospital_verify_donor(request):
 def patient_hleads(request):
     return render(request,'patient/hleads.html')
 
-def patient_shop(request):
-    return render(request,'patient/shop.html')
+def patient_shop(request, hosp_id):
+    all_medicines = operations_contract.functions.getHospitalMedicines(hosp_id).call()
+    all_services = operations_contract.functions.getHospitalServices(hosp_id).call()
+
+    medicines_services = []
+    for medicine_id in all_medicines:
+        med = operations_contract.functions.id_to_medicine(medicine_id).call()
+        medicines_services.append(med + ["medicine"])
+    
+    for service_id in all_services:
+        service = operations_contract.functions.id_to_service(service_id).call()
+        medicines_services.append(service + ["service"])
+
+    print(medicines_services)
+    return render(request,'patient/shop.html',{"medicines_services":medicines_services, "hosp_id":hosp_id})
 
 def login_page(request):
     return render(request,'login.html')

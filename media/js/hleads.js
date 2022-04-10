@@ -88,7 +88,7 @@ async function getAllHosps(){
                     </div>
                     <br>
                     <div class="service-type"><button class="btn warning">Hospital</button></div>
-                    <div class="service"><button class="btn info" onclick="send_verification('${all_hosps[index]["hospital_id"]}')">Verify Hospital Genuinity?</button>
+                    <div class="service"><button onclick="window.open('/patient/shop/${all_hosps[index]["hospital_id"]}');" class="btn info">Request Now</button>
                     </div>
                     <div class="verified"><button class="btn success">Verified</button></div>
                     <div class="contact"><button><i class="fas fa-phone"></i></button>123456789
@@ -104,7 +104,7 @@ async function getAllHosps(){
     }
 }
 
-function send_verification(hosp_id){
+function request_donation(hosp_id){
     $.ajax({
         url: "/sendverification/",
         dataType: "json",
