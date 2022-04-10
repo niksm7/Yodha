@@ -12,24 +12,14 @@
             </tr>
         </thead>
         <tbody>
+            {% for requestx in all_verification_requests %}
             <tr>
-                <td>A11289678234</td>
-                <td>0x379389egefgbfj</td>
+                <td>{{requestx.donor_id}}</td>
+                <td>{{requestx.donor_name}}</td>
              
-                <td><button style="background-color:#3DCEA0; border: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailsModal">Verify Now</button></td>
+                <td><button style="background-color:#3DCEA0; border: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailsModal" onclick="set_req_id({{requestx.id}})">Verify Now</button></td>
             </tr>
-            <tr>
-                <td>A11289678234</td>
-                <td>0x379389egefgebfj</td>
-           
-                <td><button style="background-color:#3DCEA0; border: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailsModal">Verify Now</button></td>
-            </tr>
-            <tr>
-                <td>A11289678234</td>
-                <td>0x379389egefgebfj</td>
-         
-                <td><button style="background-color:#3DCEA0; border: none;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailsModal">Verify Now</button></td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
@@ -42,22 +32,19 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <form>
+                    <form method="post" action="{% url 'verifyVerificationRequest' %}" id="verification_form">{% csrf_token %}
+                        <input type="text" name="curr_req" id="curr_req" hidden>
                         <label for="" class="form-label">Enter Your Password</label>
-                        <input type="password" class="form-control" name="" id="" aria-describedby="emailHelpId" placeholder="" />
+                        <input type="password" class="form-control" name="password" id="" aria-describedby="emailHelpId" placeholder="" />
 
                           <label for="keyHash" class="form-label">Decrypted Hash</label>
                           <textarea class="form-control" name="" id="keyHash" rows="5" disabled></textarea>
-
-                          <label for="acc" class="form-label">Account Number</label>
-                          <input type="text" class="form-control" name="" id="acc" aria-describedby="emailHelpId" disabled/>
-                        
                         
                     </form>
                 </div>
             </div>
             
-            <button type="submit" style="background-color:#3DCEA0; border: none;" class="btn btn-success">Verify this donor</button>
+            <button type="button" style="background-color:#3DCEA0; border: none;" class="btn btn-success" onclick="verify_request()">Verify To donor</button>
         </div>
 
 
@@ -68,5 +55,11 @@
 {% endblock basic_body %} {% block basic_scripts %}
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+<script>
+    function set_req_id(req_id){
+        $("#curr_req").val(req_id)
+    }
+</script>
+<script src="/media/js/verifyhosp.js"></script>
 
 {% endblock basic_scripts %}

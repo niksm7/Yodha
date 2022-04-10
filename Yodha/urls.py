@@ -22,4 +22,7 @@ urlpatterns = [
     path('signupdonor/', views.handleSignUpDonor, name='handleSignUpDonor'),
     path('signuphospital/', views.handleSignUpHospital, name='handleSignUpHospital'),
     path('signuppatient/', views.handleSignUpPatient, name='handleSignUpPatient'),
+    path('uploadipfs/', views.uploadIPFS, name='uploadIPFS'),
+    path('sendverification/', views.sendVerification, name='sendVerification'),
+    path('verifyrequest/', views.verifyVerificationRequest, name='verifyVerificationRequest'),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

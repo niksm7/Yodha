@@ -6,12 +6,8 @@
 
 <div class="container-fluid wrapper">
   <h1 class="display-5">Add Your Services</h1>
-    <form class="form" action="" method="">
-        <label>
-      <input id="hname" type="text" placeholder="City Hospital" disabled>
-      <span>Hospital name</span>
-    </label>
-
+    <form class="form" action="{% url 'uploadIPFS' %}" method="post" id="add_form" enctype="multipart/form-data">{% csrf_token %}
+        <input type="text" value="{{request.session.uid}}" id="hospital_id" hidden>
         <div class="select">
             <select name="options" id="options" onchange="callChange()">
            <option selected disabled>Choose what to add?</option>
@@ -22,21 +18,21 @@
 
         <div id="service-form">
             <label class="mt-4">
-        <input id="stype" type="text" placeholder="Service name">
+        <input id="stype" type="text" id="service_name" placeholder="Service name">
         <span>Service type</span>
       </label>
 
             <label>
-        <input id = "scost" type="text" placeholder="Service Cost">
+        <input id = "scost" type="text" id="service_cost" placeholder="Service Cost">
         <span>Service cost</span>
       </label>
 
       <label>
-        <input type="text" placeholder="Service Description">
+        <input type="text" id="service_desc" placeholder="Service Description">
         <span>Service Description</span>
       </label>
         <label>
-        <input type="file"  id="img" placeholder="Service Image">
+        <input type="file"  id="service_img" name="service_img" placeholder="Service Image">
         <span>Service Image</span>
       </label>  
         </div>
@@ -44,31 +40,26 @@
 
         <div id="medicine-form">
             <label class="mt-4">
-            <input type ="text" placeholder="Medicine name">
+            <input type ="text" id="medicine_name" placeholder="Medicine name">
             <span>Medicine Name</span>
           </label>
 
             <label>
-            <input type="text" placeholder="Medicine Cost">
+            <input type="text" id="medicine_cost" placeholder="Medicine Cost">
             <span>Medicine cost</span>
           </label>
             <label>
-            <input type="text" placeholder="Medicine Description">
+            <input type="text" id="medicine_desc" placeholder="Medicine Description">
             <span>Medicine Description</span>
           </label>
             <label>
-            <input type="file"  id="img" placeholder="Medicine Image">
+            <input type="file" id="medicine_img" name="medicine_img" placeholder="Medicine Image">
             <span>Medicine Image</span>
-          </label>  
-    
-          
-         
-
-          
+          </label>            
         </div>
 
 
-        <input type="submit" class="btn btn-primary mt-3" value="Add">
+        <input type="button" onclick="add_service_medicine()" class="btn btn-primary mt-3" value="Add">
 </div>
 
 </form>
@@ -92,5 +83,7 @@
         }
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+<script src="/media/js/hospitaladd.js"></script>
 
 {% endblock basic_scripts %}

@@ -23,7 +23,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-infura_url = "https://rinkeby.infura.io/v3/384b2420ae804f5ca4b5d6aa630f3c7b"
+infura_url = "https://rinkeby.infura.io/v3/"
 
 web = Web3(Web3.HTTPProvider(infura_url))
 web.middleware_onion.inject(geth_poa_middleware, layer=0)
@@ -33,18 +33,27 @@ web.eth.default_account = web.eth.account.privateKeyToAccount(os.getenv("PRIVATE
 # Operations
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
-operations_abi = requests.get("https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=0x3d4A42e90a23E5895f03b01486D303CbbfeBb226&apikey=39MRYT8W4D35AH26BJZVGQ1KK19SR5XWXG", headers=headers).json()['result']
+operations_abi = requests.get("https://api-rinkeby.etherscan.io/api?module=contract&action=getabi&address=&apikey=", headers=headers).json()['result']
 
-operations_address = "0x3d4A42e90a23E5895f03b01486D303CbbfeBb226"
+operations_address = ""
 
 operations_contract = web.eth.contract(abi=operations_abi, address=operations_address)
 
 # Token
-token_address = "0x29f54D028a811c00bF25cabe3b10BcF774525807"
+token_address = ""
 
 
 backend = default_backend()
 iterations = 100_000
+
+
+def upload_to_ipfs(_image):
+    ipfs_url = "http://127.0.0.1:5001"
+    end_point = "/api/v0/add"
+    response = requests.post(ipfs_url + end_point, files={"file": _image})
+    ipfs_hash = response.json()["Hash"]
+    print(ipfs_hash)
+    return ipfs_hash
 
 
 def upload_to_ipfs_encrypted(_image, fernet_key):

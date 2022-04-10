@@ -7,7 +7,7 @@ import base64
 import pyrebase
 from cryptography.hazmat.backends import default_backend
 from django.contrib import auth
-from yodhaapp.models import WebUser
+from yodhaapp.models import WebUser,VerificationRequests
 from django.core.files.storage import default_storage
 from .utils import *
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -19,6 +19,8 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
+import ast
+
 
 config = {
     "apiKey": "AIzaSyDDakZxrvAPUlcGdk4wWFEQu5IyXP0JAJc",
@@ -41,7 +43,8 @@ def sidebar(request):
     return render(request,'donations/sidebar.html')
 
 def hospitalleads(request):
-    return render(request,'donor/hospitalleads.html')
+    all_hosps = operations_contract.functions.getAllHospitals().call()
+    return render(request,'donor/hospitalleads.html',{"all_hosps":all_hosps})
 
 def home(request):
     return render(request,'home.html')
@@ -53,7 +56,6 @@ def donations(request):
     return render(request,'donor/donations.html')
 
 
-
 def hospital_add(request):
     return render(request,'hospital/hospitaladd.html')
 
@@ -62,7 +64,9 @@ def hospital_donation_request(request):
     return render(request,'hospital/hospitaldonationrequest.html')
 
 def hospital_verify_donor(request):
-    return render(request,'hospital/hospitalverifydonor.html')
+    print(request.session['uid'])
+    all_verification_requests = VerificationRequests.objects.filter(hosp_id=request.session['uid'])
+    return render(request,'hospital/hospitalverifydonor.html',{"all_verification_requests":all_verification_requests})
 
 
 def patient_hleads(request):
@@ -254,3 +258,54 @@ def handleLogout(request):
         auth.logout(request)
         authe.current_user = None
     return HttpResponseRedirect(reverse("login_page"))
+
+
+def uploadIPFS(request):
+    img_of = request.POST.get("options")
+    if img_of == "Medicine":
+        addition_image = request.FILES.get("medicine_img")
+    else:
+        addition_image = request.FILES.get("service_img")
+    image_hash = upload_to_ipfs(addition_image)
+    return JsonResponse({"image_hash":image_hash})
+
+
+def sendVerification(request):
+    hosp_id = request.GET.get("hosp_id")
+    verification_string = "helloworld"
+    hosp_public_key = operations_contract.functions.user_to_pubkey(hosp_id).call()
+    hosp_public_key = hosp_public_key.encode()
+    hosp_public_key  = PKCS1_OAEP.new(RSA.import_key(hosp_public_key))
+    hosp_verif_key = base64.b64encode(hosp_public_key.encrypt(verification_string.encode()))
+
+    donor = WebUser.objects.filter(id=request.session['uid'])[0]
+
+    donor_public_key = operations_contract.functions.user_to_pubkey(request.session['uid']).call()
+    donor_public_key = donor_public_key.encode()
+    donor_public_key  = PKCS1_OAEP.new(RSA.import_key(donor_public_key))
+    donor_verif_key = base64.b64encode(donor_public_key.encrypt(verification_string.encode()))
+
+    new_verif_req = VerificationRequests(hosp_id=hosp_id, donor_id=request.session['uid'], donor_name=donor.name, verification_string={hosp_id:hosp_verif_key.decode(), request.session['uid']:donor_verif_key.decode()})
+
+    new_verif_req.save()
+
+    return JsonResponse({"Ok":"success"})
+
+
+def verifyVerificationRequest(request):
+    password = request.POST.get("password")
+    curr_req_id = int(request.POST.get("curr_req"))
+    pvt_enc_key = operations_contract.functions.user_to_pvtkey(request.session['uid']).call()
+    pvt_key = password_decrypt(pvt_enc_key, password).decode()
+    pvt_key = PKCS1_OAEP.new(RSA.import_key(pvt_key))
+
+    curr_req = VerificationRequests.objects.get(id=curr_req_id)
+
+    curr_req_string = base64.b64decode(ast.literal_eval(curr_req.verification_string)[request.session['uid']])
+
+    check_string = pvt_key.decrypt(curr_req_string).decode()
+
+    curr_req.submitted_string = check_string
+    curr_req.save()
+
+    return JsonResponse({"check_string":check_string})

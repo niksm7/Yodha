@@ -32,3 +32,11 @@ class HashFileType(models.Model):
     hash_val = models.CharField(max_length=50, primary_key=True)
     suffix_ext = models.CharField(max_length=50)
     prefix_name = models.CharField(max_length=100)
+
+
+class VerificationRequests(models.Model):
+    hosp_id = models.TextField()
+    donor_id = models.TextField()
+    donor_name = models.CharField(max_length=500)
+    verification_string = models.TextField()
+    submitted_string = models.TextField()
