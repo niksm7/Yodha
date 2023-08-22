@@ -4,6 +4,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class Main {
 
@@ -27,5 +29,16 @@ class Main {
 		Scanner s = new Scanner(responseStream).useDelimiter("\\A");
 		String response = s.hasNext() ? s.next() : "";
 		System.out.println(response);
+
+		Pattern pattern = Pattern.compile("<SUCCESS>(.*?)</SUCCESS>");
+	        Matcher matcher = pattern.matcher(response);
+	
+	        if (matcher.find()) {
+	            String successValue = matcher.group(1);
+	            System.out.println("session id: " + successValue);
+	        } else {
+	            System.out.println("session id not found");
+	        }
+		
 	}
 }
